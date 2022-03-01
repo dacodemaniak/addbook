@@ -19,7 +19,7 @@ export class AppRoutingModule {
       component: HomeComponent
     },
     {
-      path: 'detail',
+      path: 'detail/:id',
       component: AddressDetailComponent
     },
     {

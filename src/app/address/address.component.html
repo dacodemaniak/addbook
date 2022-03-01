@@ -1,6 +1,6 @@
 <address class="card">
   <div class="badge">
-    <a [routerLink]="['/detail']">
+    <a [routerLink]="['/', 'detail', addressModel.id]">
       {{ addressModel.zipCode | departement }}
     </a>
   </div>

@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, ActivatedRouteSnapshot, ParamMap } from '@angular/router';
+import { Subscription } from 'rxjs';
+import { AddressModel } from '../core/models/address-model';
 import { AddressService } from '../core/services/address.service';
 
 @Component({
@@ -8,11 +11,35 @@ import { AddressService } from '../core/services/address.service';
 })
 export class AddressDetailComponent implements OnInit {
 
+  private subscribers: Subscription[] = [];
+  public addressModel!: AddressModel;
+
   constructor(
-    private addressService: AddressService
+    private addressService: AddressService,
+    private route: ActivatedRoute
   ) { }
 
   ngOnInit(): void {
+    this.subscribers.push(
+      this.route.paramMap
+        .subscribe((params: ParamMap) => {
+          const oId: any = params.get('id');
+          if (oId) {
+            // Call service with id
+            this.subscribers.push(
+              this.addressService.findOne(+oId)
+                .subscribe((address: AddressModel | null) => {
+                  if (address instanceof AddressModel) {
+                    this.addressModel = address;
+                  } else {
+                    throw new Error(`Address with ${oId} was not found`);
+                  }
+                })
+            );
+          }
+        })
+    )
+
   }
 
 }

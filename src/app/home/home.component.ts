@@ -28,8 +28,7 @@ export class HomeComponent implements OnInit {
   }
 
   public remove(address: AddressModel): void {
-    const index: number = this.addresses.indexOf(address);
-    this.addresses.splice(index, 1);
+    this.addressService.remove(address);
   }
 
   public toggleRemoveState(): void {

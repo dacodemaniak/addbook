@@ -1,1 +1,9 @@
-<p>address-detail works!</p>
+<ng-container *ngIf="addressModel else load">
+  <app-address
+      [addressModel]="addressModel"
+  ></app-address>
+</ng-container>
+
+<ng-template #load>
+  Address is loading...
+</ng-template>

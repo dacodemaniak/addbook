@@ -12,7 +12,7 @@ export class AddressService implements CrudInterface<AddressModel> {
   private addresses: AddressModel[] = [];
 
   constructor() {
-    //this._load();
+    console.log(new Date() + ' service was loaded');
   }
 
   findAll(): Observable<AddressModel[]> {

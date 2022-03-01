@@ -1,0 +1,11 @@
+<!-- Loop over an array -->
+<app-address
+  *ngFor="let address of addresses"
+  [addressModel]="address"
+  [buttonDisabledState]="removeState"
+  (oRemove)="remove($event)"
+></app-address>
+
+<button (click)="toggleRemoveState()">
+  {{ removeState ? 'Activer' : 'Désactiver' }}
+</button>

@@ -5,12 +5,16 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AddressComponent } from './address/address.component';
 import { DepartementPipe } from './pipes/departement.pipe';
+import { AddressDetailComponent } from './address-detail/address-detail.component';
+import { HomeComponent } from './home/home.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     AddressComponent,
-    DepartementPipe
+    DepartementPipe,
+    AddressDetailComponent,
+    HomeComponent
   ],
   imports: [
     BrowserModule,

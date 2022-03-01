@@ -1,0 +1,17 @@
+<address class="card">
+  <div class="badge">
+    {{ addressModel.zipCode | departement }}
+  </div>
+  <div>
+    <span>{{ addressModel.streetNumber }}</span>
+    <span>{{ getStreetName() }}</span>
+  </div>
+  <div>
+    <span (click)="updateAddress()">{{ addressModel.zipCode }}</span>
+    <span class="city">{{ addressModel.city | uppercase }}</span>
+  </div>
+  <button
+    type="button" (click)="removeAddress()"
+    [disabled]="buttonDisabledState"
+  >X</button>
+</address>

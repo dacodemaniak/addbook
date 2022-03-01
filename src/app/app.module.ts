@@ -7,6 +7,7 @@ import { AddressComponent } from './address/address.component';
 import { DepartementPipe } from './pipes/departement.pipe';
 import { AddressDetailComponent } from './address-detail/address-detail.component';
 import { HomeComponent } from './home/home.component';
+import { SharedModule } from './shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { HomeComponent } from './home/home.component';
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    SharedModule
   ],
   providers: [],
   bootstrap: [AppComponent]

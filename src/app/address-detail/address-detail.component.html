@@ -1,0 +1,15 @@
+<ng-container *ngIf="addressModel else load">
+  <app-address
+      [addressModel]="addressModel"
+  ></app-address>
+</ng-container>
+
+<a [routerLink]="['/', 'home']">
+  Retour à la liste
+</a>
+
+<button (click)="goHome()">Retour</button>
+
+<ng-template #load>
+  Address is loading...
+</ng-template>

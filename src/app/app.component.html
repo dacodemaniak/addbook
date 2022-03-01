@@ -1,13 +1,7 @@
-<!-- Loop over an array -->
-<app-address
-  *ngFor="let address of addresses"
-  [addressModel]="address"
-  [buttonDisabledState]="removeState"
-  (oRemove)="remove($event)"
-></app-address>
+<app-header></app-header>
 
-<button (click)="toggleRemoveState()">
-  {{ removeState ? 'Activer' : 'Désactiver' }}
-</button>
+<main>
+  <router-outlet></router-outlet>
+</main>
 
-<input [type]="showPassword ? 'text' : 'password'" placeholder="Mot de passe"><button (click)="showPassword = !showPassword">/!\</button>
+<app-footer></app-footer>

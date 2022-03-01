@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, ActivatedRouteSnapshot, ParamMap } from '@angular/router';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ActivatedRoute, ActivatedRouteSnapshot, ParamMap, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { AddressModel } from '../core/models/address-model';
 import { AddressService } from '../core/services/address.service';
@@ -9,14 +9,15 @@ import { AddressService } from '../core/services/address.service';
   templateUrl: './address-detail.component.html',
   styleUrls: ['./address-detail.component.scss']
 })
-export class AddressDetailComponent implements OnInit {
+export class AddressDetailComponent implements OnInit, OnDestroy {
 
   private subscribers: Subscription[] = [];
   public addressModel!: AddressModel;
 
   constructor(
     private addressService: AddressService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
@@ -42,4 +43,11 @@ export class AddressDetailComponent implements OnInit {
 
   }
 
+  ngOnDestroy(): void {
+      this.subscribers.forEach((subscriber: Subscription) => subscriber.unsubscribe());
+  }
+
+  public goHome(): void {
+    this.router.navigate(['/', 'home']);
+  }
 }

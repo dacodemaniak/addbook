@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { AddAddressComponent } from './add-address/add-address.component';
 import { AddressDetailComponent } from './address-detail/address-detail.component';
 import { HomeComponent } from './home/home.component';
 
@@ -21,6 +22,10 @@ export class AppRoutingModule {
     {
       path: 'detail/:id',
       component: AddressDetailComponent
+    },
+    {
+      path:'add',
+      component: AddAddressComponent
     },
     {
       path: '**',

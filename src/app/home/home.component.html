@@ -9,3 +9,7 @@
 <button (click)="toggleRemoveState()">
   {{ removeState ? 'Activer' : 'Désactiver' }}
 </button>
+
+<button [routerLink]="['/', 'add']">
+  Ajouter une adresse
+</button>

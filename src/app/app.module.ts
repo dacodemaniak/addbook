@@ -9,6 +9,7 @@ import { AddressDetailComponent } from './address-detail/address-detail.componen
 import { HomeComponent } from './home/home.component';
 import { SharedModule } from './shared/shared.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { AddAddressComponent } from './add-address/add-address.component';
 
 @NgModule({
   declarations: [
@@ -16,7 +17,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     AddressComponent,
     DepartementPipe,
     AddressDetailComponent,
-    HomeComponent
+    HomeComponent,
+    AddAddressComponent
   ],
   imports: [
     BrowserModule,

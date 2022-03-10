@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AddAddressComponent } from './add-address/add-address.component';
 import { AddressDetailComponent } from './address-detail/address-detail.component';
+import { CanEditGuard } from './core/guards/can-edit.guard';
 import { HomeComponent } from './home/home.component';
 
 @NgModule({
@@ -25,7 +26,8 @@ export class AppRoutingModule {
     },
     {
       path:'add',
-      component: AddAddressComponent
+      component: AddAddressComponent,
+      canActivate: [CanEditGuard]
     },
     {
       path: '**',

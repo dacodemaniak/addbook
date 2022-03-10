@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { take } from 'rxjs/operators';
 import { AddressModel } from 'src/app/core/models/address-model';
+import { UserService } from 'src/app/core/services/user.service';
 import { AddressService } from './../../../core/services/address.service';
 
 @Component({
@@ -13,7 +14,8 @@ export class FooterComponent implements OnInit {
   public itemNumber!: number;
 
   constructor(
-    private addressService: AddressService
+    private addressService: AddressService,
+    public userService: UserService
   ) { }
 
   ngOnInit(): void {

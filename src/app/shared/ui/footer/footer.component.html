@@ -2,4 +2,7 @@
   <mat-toolbar-row>
     Nb. éléments : {{ itemNumber }}
   </mat-toolbar-row>
+  <mat-toolbar-row>
+    {{ (this.userService.isAuth | async) ? 'Connecté' : 'Non connecté'}}
+  </mat-toolbar-row>
 </mat-toolbar>

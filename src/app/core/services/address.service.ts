@@ -21,14 +21,19 @@ export class AddressService implements CrudInterface<AddressModel> {
   }
 
   findAll(): Observable<AddressModel[]> {
-    this.addresses = datas
+    const localData: string | null = localStorage.getItem('addresses');
+    if (localData !== null) {
+      const localDatas: any[] = JSON.parse(localData);
+      this.addresses = localDatas
       .map((item: any) => {
         const addressModel = new AddressModel();
         Object.assign(addressModel, item);
         return addressModel;
       });
-    this.itemNumber$.next(this.addresses.length);
-    return of(this.addresses);
+      this.itemNumber$.next(this.addresses.length);
+      return of(this.addresses);
+    }
+    return of([]);
   }
 
   findOne(id: number): Observable<AddressModel | null> {
@@ -41,9 +46,30 @@ export class AddressService implements CrudInterface<AddressModel> {
 
     return of(null);
   }
+
   add(t: AddressModel): Observable<AddressModel> {
-    throw new Error('Method not implemented.');
+    const localData: string | null = localStorage.getItem('addresses');
+    let nextId: number = 1;
+
+    if (localData) {
+      const localDatas: any[] = JSON.parse(localData);
+      // Trier le tableau dans l'ordre inverse des ids
+      const comparator: {(obj1: any, obj2: any): number} = (obj1: any, obj2: any) => obj2.id - obj1.id;
+      const sortedDatas: any[] = localDatas.sort(comparator);
+      nextId = sortedDatas[0].id + 1;
+      t.id = nextId;
+      localDatas.push(t);
+      localStorage.setItem('addresses', JSON.stringify(localDatas));
+      return of(t);
+    }
+
+    const newData: any[] = [{...t, id: nextId}];
+    const {id, streetNumber, streetName, zipCode, city} = t;
+
+    localStorage.setItem('addresses', JSON.stringify(newData));
+    return of(t);
   }
+
   update(t: AddressModel): void {
     throw new Error('Method not implemented.');
   }
@@ -57,28 +83,9 @@ export class AddressService implements CrudInterface<AddressModel> {
   }
 
   private _load(): void {
-    const aelion: AddressModel = new AddressModel();
-    aelion.streetNumber = '95';
-    aelion.streetName = 'chemin de Gabardie';
-    aelion.zipCode = '31000';
-    aelion.city = 'Toulouse';
-
-    this.addresses.push(aelion);
-
-    const mairieToulouse: AddressModel = new AddressModel();
-    mairieToulouse.streetNumber = '1';
-    mairieToulouse.streetName = 'Place du Capitole';
-    mairieToulouse.zipCode = '31000';
-    mairieToulouse.city = 'Toulouse';
-
-    this.addresses.push(mairieToulouse);
-
-    const bordeaux: AddressModel = new AddressModel();
-    bordeaux.streetNumber = '1';
-    bordeaux.streetName = 'Place de la Victoire';
-    bordeaux.zipCode = '33000';
-    bordeaux.city = 'Bordeaux';
-
-    this.addresses.push(bordeaux);
+    localStorage.setItem(
+      'addresses',
+      JSON.stringify(datas)
+    );
   }
 }

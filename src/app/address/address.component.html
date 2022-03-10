@@ -4,6 +4,9 @@
       {{ addressModel.zipCode | departement }}
     </a>
   </div>
+
+  <div deptBadge [dept]="addressModel"></div>
+
   <div>
     <span>{{ addressModel.streetNumber }}</span>
     <span>{{ getStreetName() }}</span>

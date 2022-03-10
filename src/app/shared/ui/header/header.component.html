@@ -1,3 +1,11 @@
 <mat-toolbar color="primary">
   <a [routerLink]="['/', 'home']">My Address Book</a>
+
+  <button *ngIf="!isAuth" (click)="toggleAccount()" mat-icon-button>
+    <mat-icon>login</mat-icon>
+  </button>
+
+  <button *ngIf="isAuth" (click)="toggleAccount()" mat-icon-button>
+    <mat-icon>logout</mat-icon>
+  </button>
 </mat-toolbar>

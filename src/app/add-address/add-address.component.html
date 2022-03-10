@@ -1,1 +1,54 @@
-<p>add-address works!</p>
+<div>
+  <input
+    type="text"
+    placeholder="Saisissez une adresse"
+    (input)="onInput($event)"
+  >
+
+  <div [hidden]="addresses.length === 0">
+    <ul>
+      <li *ngFor="let address of addresses" (click)="onAddressSelected(address)">
+        {{ address.streetNumber}} {{ address.streetName }} {{address.zipCode }} {{ address.city }}
+      </li>
+    </ul>
+  </div>
+</div>
+
+<form [formGroup]="addressForm" (ngSubmit)="onSubmit()">
+  <mat-form-field class="formField">
+    <input matInput type="text" formControlName="streetNumber" placeholder="N° de rue">
+    <mat-error  *ngIf="c['streetNumber'].touched && c['streetNumber'].errors">
+      Le N° de rue est obligatoire
+    </mat-error>
+  </mat-form-field>
+
+  <mat-form-field class="formField">
+    <input matInput type="text" formControlName="streetName" placeholder="Nom de rue">
+    <mat-error *ngIf="c['streetName'].touched && c['streetName'].errors">
+      Le nom de rue est obligatoire
+    </mat-error>
+  </mat-form-field>
+
+  <mat-form-field class="formField">
+    <input matInput type="text" formControlName="zipCode" placeholder="Code postal">
+    <mat-error  *ngIf="(c['zipCode'].touched || c['zipCode'].dirty) && c['zipCode'].errors">
+      <span *ngIf="c['zipCode'].hasError('required')">
+        Le code postal est obligatoire
+      </span>
+      <span *ngIf="c['zipCode'].hasError('minlength')">
+        Le code postal doit contenir 5 caractères
+      </span>
+    </mat-error>
+  </mat-form-field>
+
+  <mat-form-field class="formField">
+    <input matInput type="text" formControlName="city" placeholder="Ville">
+    <mat-error  *ngIf="c['city'].touched && c['city'].errors">
+      La ville est obligatoire
+    </mat-error>
+  </mat-form-field>
+
+  <div class="formField">
+    <button mat-raised-button color="primary" [disabled]="addressForm.invalid">Ajouter</button>
+  </div>
+</form>

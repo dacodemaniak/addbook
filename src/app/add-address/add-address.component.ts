@@ -107,7 +107,6 @@ export class AddAddressComponent implements OnInit, OnDestroy {
         take(1)
       )
       .subscribe(() => this.router.navigate(['/', 'home']));
-
   }
 
   public onInput(event: any): void {

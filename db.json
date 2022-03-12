@@ -1,0 +1,32 @@
+{
+  "addresses": [
+    {
+      "id": 1,
+      "streetName": "rue des Jardins",
+      "streetNumber": "40",
+      "zipCode": "31620",
+      "city": "Castelnau d'Estrétefonds"
+    },
+    {
+      "id": 2,
+      "streetName": "Place de la Victoire",
+      "streetNumber": "1",
+      "zipCode": "33000",
+      "city": "Bordeaux"
+    },
+    {
+      "streetNumber": "21",
+      "streetName": "Allée de Xeraco",
+      "zipCode": "31150",
+      "city": "Bruguières",
+      "id": 3
+    }
+  ],
+  "users": [
+    {
+      "id": 1,
+      "username": "Admin",
+      "userPassword": "nimda"
+    }
+  ]
+}

@@ -4,7 +4,8 @@
 
 export const environment = {
   production: false,
-  apiAddress: 'https://api-adresse.data.gouv.fr/search/'
+  apiAddress: 'https://api-adresse.data.gouv.fr/search/',
+  api: 'http://127.0.0.1:3000/'
 };
 
 /*

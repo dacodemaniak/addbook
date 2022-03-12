@@ -1,7 +1,12 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, of } from 'rxjs';
+import { BehaviorSubject, Observable, of, throwError } from 'rxjs';
+import { catchError, map, take } from 'rxjs/operators';
 import { CrudInterface } from '../interfaces/crud-interface';
+import { IAddress } from '../interfaces/i-address';
 import { AddressModel } from '../models/address-model';
+
+import { environment } from './../../../environments/environment';
 
 import { datas } from './../fake-backend/fake-datas';
 
@@ -12,8 +17,10 @@ export class AddressService implements CrudInterface<AddressModel> {
   private addresses: AddressModel[] = [];
   private itemNumber$: BehaviorSubject<number> = new BehaviorSubject<number>(0);
 
-  constructor() {
-    console.log(new Date() + ' service was loaded');
+  constructor(
+    private httpClient: HttpClient
+  ) {
+    console.log(new Date() + 'service was loaded');
   }
 
   public get itemNumber(): BehaviorSubject<number> {
@@ -21,53 +28,50 @@ export class AddressService implements CrudInterface<AddressModel> {
   }
 
   findAll(): Observable<AddressModel[]> {
-    const localData: string | null = localStorage.getItem('addresses');
-    if (localData !== null) {
-      const localDatas: any[] = JSON.parse(localData);
-      this.addresses = localDatas
-      .map((item: any) => {
-        const addressModel = new AddressModel();
-        Object.assign(addressModel, item);
-        return addressModel;
-      });
-      this.itemNumber$.next(this.addresses.length);
-      return of(this.addresses);
-    }
-    return of([]);
+    return this.httpClient.get<IAddress[]>(
+      `${environment.api}addresses`
+    )
+    .pipe(
+      take(1),
+      map((datas: IAddress[]) => {
+        return datas.map((data: IAddress) => {
+          const address: AddressModel = new AddressModel();
+          Object.assign(address, data);
+          return address;
+        });
+      })
+    );
   }
 
+  private static errorHandler = (error: any) => {
+    console.log(`Unable to find the id from addresses`);
+    return throwError(() => error);
+  };
+
   findOne(id: number): Observable<AddressModel | null> {
-    const address: AddressModel | undefined = this.addresses
-      .find((obj: AddressModel) => obj.id === id);
-
-    if (address !== undefined) {
-      return of(address);
-    }
-
-    return of(null);
+    return this.httpClient.get<IAddress>(
+      `${environment.api}addresses/${id}`
+    )
+    .pipe(
+      take(1),
+      map((address: IAddress) => Object.assign(new AddressModel(), address)),
+      catchError(AddressService.errorHandler)
+    );
   }
 
   add(t: AddressModel): Observable<AddressModel> {
-    const localData: string | null = localStorage.getItem('addresses');
-    let nextId: number = 1;
-
-    if (localData) {
-      const localDatas: any[] = JSON.parse(localData);
-      // Trier le tableau dans l'ordre inverse des ids
-      const comparator: {(obj1: any, obj2: any): number} = (obj1: any, obj2: any) => obj2.id - obj1.id;
-      const sortedDatas: any[] = localDatas.sort(comparator);
-      nextId = sortedDatas[0].id + 1;
-      t.id = nextId;
-      localDatas.push(t);
-      localStorage.setItem('addresses', JSON.stringify(localDatas));
-      return of(t);
-    }
-
-    const newData: any[] = [{...t, id: nextId}];
-    const {id, streetNumber, streetName, zipCode, city} = t;
-
-    localStorage.setItem('addresses', JSON.stringify(newData));
-    return of(t);
+    return this.findLatest()
+      .pipe(
+        take(1),
+        map((nextId: number) => {
+          const address: AddressModel = {...t, id: nextId};
+          this.httpClient.post<AddressModel>(
+            `${environment.api}addresses`,
+            address
+          ).subscribe();
+          return address;
+        })
+    );
   }
 
   update(t: AddressModel): void {
@@ -80,6 +84,18 @@ export class AddressService implements CrudInterface<AddressModel> {
       1
     );
     this.itemNumber$.next(this.addresses.length);
+  }
+
+
+  private findLatest(): Observable<number> {
+    return this.findAll()
+      .pipe(
+        take(1),
+        map((addresses: AddressModel[]) => {
+          const comparator: {(obj1: any, obj2: any): number} = (obj1: any, obj2: any) => obj2.id - obj1.id;
+          return addresses.sort(comparator)[0].id + 1;
+        })
+      )
   }
 
   private _load(): void {
